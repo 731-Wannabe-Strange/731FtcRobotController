@@ -19,10 +19,10 @@ public class MecanumDrive {
     private IMU imu;
 
     public void init(HardwareMap hardwareMap) {
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "front_left_motor");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "front_right_motor");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "back_left_motor");
-        backRightMotor = hardwareMap.get(DcMotor.class, "back_right_motor");
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "lff");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "rtf");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "lfb");
+        backRightMotor = hardwareMap.get(DcMotor.class, "rtb");
 
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -33,45 +33,14 @@ public class MecanumDrive {
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        imu = hardwareMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
-        imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
     }
 
     public void driveFieldRelativeWithSnap(double forward, double right, double rightStickX, double rightStickY) {
-        double r = Math.hypot(rightStickY, rightStickX);
-        double headingRad = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        double newForward = forward * Math.cos(headingRad) + right * Math.sin(headingRad);
-        double newRight = -forward * Math.sin(headingRad) + right * Math.cos(headingRad);
-        if (r < 0.5) {
-            // Stick not pressed hard enough: no snap
-            currentHeadingError = 0;
-            currentRotatePower = 0;
-            this.drive(newForward, newRight, 0);
-            return;
-        }
+        frontLeftMotor.setPower(-forward);
+        backLeftMotor.setPower(forward);
 
-        double theta = Math.atan2(rightStickY, rightStickX);
-        double targetHeading = Math.toDegrees(theta);
-        if (targetHeading < 0) targetHeading += 360;
-
-        double currentHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        if (currentHeading < 0) {
-            currentHeading += 360;
-        }
-
-        double error = targetHeading - currentHeading;
-        if (error > 180) error -= 360;
-        if (error < -180) error += 360;
-
-        double kP = 0.01; // Tune this value
-        double rotate = kP * error;
-        rotate = Math.max(-1.0, Math.min(1.0, rotate)); // Clamp
-        this.drive(newForward, newRight, rotate);
-        currentHeadingError = error;
-        currentRotatePower = rotate;
+        frontRightMotor.setPower(rightStickX);
+        backRightMotor.setPower(rightStickX);
 
     }
 
