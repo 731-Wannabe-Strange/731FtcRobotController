@@ -13,11 +13,6 @@ public class MecanumDrive {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
-    private double currentHeadingError = 0;
-    private double currentRotatePower = 0;
-
-    private IMU imu;
-
     public void init(HardwareMap hardwareMap) {
         frontLeftMotor = hardwareMap.get(DcMotor.class, "lff");
         frontRightMotor = hardwareMap.get(DcMotor.class, "rtf");
@@ -35,48 +30,13 @@ public class MecanumDrive {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void driveFieldRelativeWithSnap(double forward, double right, double rightStickX, double rightStickY) {
+    public void drive(double forward, double right, double rightStickX, double rightStickY) {
         frontLeftMotor.setPower(-forward);
         backLeftMotor.setPower(forward);
 
         frontRightMotor.setPower(rightStickX);
         backRightMotor.setPower(rightStickX);
 
-    }
-
-    public void setPowers(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
-        double largestSpeed = 1.0;
-        largestSpeed = Math.max(largestSpeed, Math.abs(frontLeftPower));
-        largestSpeed = Math.max(largestSpeed, Math.abs(frontRightPower));
-        largestSpeed = Math.max(largestSpeed, Math.abs(backLeftPower));
-        largestSpeed = Math.max(largestSpeed, Math.abs(backRightPower));
-        frontLeftMotor.setPower(frontLeftPower / largestSpeed);
-        frontRightMotor.setPower(frontRightPower / largestSpeed);
-        backLeftMotor.setPower(backLeftPower / largestSpeed);
-        backRightMotor.setPower(backRightPower / largestSpeed);
-    }
-
-    public void drive(double forward, double right, double rotate) {
-        double frontLeftPower = forward + right + rotate;
-        double frontRightPower = forward - right - rotate;
-        double backLeftPower = forward - right + rotate;
-        double backRightPower = forward + right - rotate;
-        setPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-    }
-
-    public double getHeadingError() {
-        return currentHeadingError;
-    }
-
-    public double getRotatePower() {
-        return currentRotatePower;
-    }
-
-    public double getImuYawDegrees() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-    }
-
-    public void update() { // Empty for now
     }
 }
 

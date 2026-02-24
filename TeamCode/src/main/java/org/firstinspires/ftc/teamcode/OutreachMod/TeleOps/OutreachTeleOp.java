@@ -41,10 +41,7 @@ public class OutreachTeleOp extends OpMode {
         rightBumper = gamepad1.right_bumper;
         rightBumperWasPressed = rightBumper;
 
-        drive.driveFieldRelativeWithSnap(forward, right, rightStickY, rightStickX);
+        drive.drive(forward, right, rightStickY, rightStickX);
     }
-
-    /* public FlyWheelRotation.FlyWheelStates toggle() {
-    } */
 
 }
