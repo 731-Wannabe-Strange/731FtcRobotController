@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.OutreachMod.TeleOps;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.ArmRotation;
-import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.FlyWheelRotation;
 import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.MecanumDrive;
-import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.PushServo;
 
 @TeleOp(name = "Jojos TeleOp")
 
@@ -41,7 +38,13 @@ public class OutreachTeleOp extends OpMode {
         rightBumper = gamepad1.right_bumper;
         rightBumperWasPressed = rightBumper;
 
-        drive.drive(forward, right, rightStickY, rightStickX);
+        telemetry.addData("Front Left Motor Speed", drive.frontLeftMotor.getVelocity());
+        telemetry.addData("Front Right Motor Speed", drive.frontRightMotor.getVelocity());
+        telemetry.addData("Back Left Motor Speed", drive.backLeftMotor.getVelocity());
+        telemetry.addData("Back Right Motor Speed", drive.backRightMotor.getVelocity());
+
+
+        drive.drive(forward, right, rightStickX);
     }
 
 }
