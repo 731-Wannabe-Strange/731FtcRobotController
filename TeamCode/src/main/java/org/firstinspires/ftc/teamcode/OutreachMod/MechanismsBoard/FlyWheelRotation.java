@@ -12,7 +12,7 @@ public class FlyWheelRotation {
 
 
     public static final int RESTING_MOTION = 0;
-    public static final double SPINNING_MOTION = 0.5;
+    public static final double SPINNING_MOTION = -0.5;
 
     private FlyWheelStates currentFlyWheelState = FlyWheelStates.RESTING;
 
@@ -22,15 +22,13 @@ public class FlyWheelRotation {
     }
 
     public void init(HardwareMap hardwareMap) {
-        flyWheelMotor1 = (DcMotorEx) hardwareMap.dcMotor.get("flywheelr");
+        flyWheelMotor1 = (DcMotorEx) hardwareMap.dcMotor.get("flywheel");
         flyWheelMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         flyWheelMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyWheelMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flyWheelMotor1.setDirection(DcMotor.Direction.FORWARD);
         flyWheelMotor1.setPower(RESTING_MOTION);
-        flyWheelMotor1.setVelocityPIDFCoefficients(1, 0, 0, 0);
-        flyWheelMotor2.setVelocityPIDFCoefficients(1, 0, 0, 0);
-        flyWheelMotor2 = (DcMotorEx) hardwareMap.dcMotor.get("flywheell");
+        flyWheelMotor2 = (DcMotorEx) hardwareMap.dcMotor.get("flywheel1");
         flyWheelMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         flyWheelMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyWheelMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

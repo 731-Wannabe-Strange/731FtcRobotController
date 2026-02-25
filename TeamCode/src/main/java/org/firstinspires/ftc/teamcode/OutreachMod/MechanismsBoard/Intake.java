@@ -9,7 +9,7 @@ public class Intake {
     public boolean isRunning;
 
     public void init(HardwareMap hardwareMap) {
-        intake = hardwareMap.get(DcMotorEx.class, "lff");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setDirection(DcMotor.Direction.FORWARD);
         isRunning = false;
