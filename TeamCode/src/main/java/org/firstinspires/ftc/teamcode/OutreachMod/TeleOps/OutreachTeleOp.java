@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.OutreachMod.TeleOps;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.ArmRotation;
 import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.FlyWheelRotation;
 import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.MecanumDrive;
-import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.Transfer;
+import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.PushServo;
 
 @TeleOp(name = "Jojos TeleOp")
 
@@ -13,23 +14,16 @@ import org.firstinspires.ftc.teamcode.OutreachMod.MechanismsBoard.Transfer;
 public class OutreachTeleOp extends OpMode {
     MecanumDrive drive = new MecanumDrive();
 
-    Transfer transfer = new Transfer();
-
-    FlyWheelRotation flywheel = new FlyWheelRotation();
-
     public boolean aButtonPressed;
     public boolean aButtonWasPressed;
 
-    public boolean rightBumperAlreadyPressed;
-    public boolean leftBumperAlreadyPressed;
-    public boolean transferOn;
+    public boolean rightBumper;
+    public boolean rightBumperWasPressed;
 
 
     @Override
     public void init() {
         drive.init(hardwareMap);
-        transfer.init(hardwareMap);
-        flywheel.init(hardwareMap);
         aButtonPressed = false;
         aButtonWasPressed = false;
     }
@@ -44,20 +38,8 @@ public class OutreachTeleOp extends OpMode {
         aButtonWasPressed = aButtonPressed;
         aButtonPressed = gamepad1.a;
 
-        if (gamepad1.right_bumper && !rightBumperAlreadyPressed) {
-            transferOn = !transferOn;
-            if (transferOn) {
-                transfer.transferMotor.setPower(1.0);
-            } else {
-                transfer.transferMotor.setPower(0.0);
-            }
-        }
-        rightBumperAlreadyPressed = gamepad1.right_bumper;
-
-        if (gamepad1.left_bumper && !leftBumperAlreadyPressed) {
-            flywheel.toggleFlyWheelState();
-        }
-        leftBumperAlreadyPressed = gamepad1.left_bumper;
+        rightBumper = gamepad1.right_bumper;
+        rightBumperWasPressed = rightBumper;
 
         drive.drive(forward, right, rightStickY, rightStickX);
     }
